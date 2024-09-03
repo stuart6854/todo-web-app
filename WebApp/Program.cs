@@ -1,7 +1,11 @@
+using System.Text;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.IdentityModel.Tokens;
 using WebApp;
+using WebApp.Authentication;
 using WebApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +19,27 @@ builder.Services.AddScoped(
 );
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+
+var secret = builder.Configuration.GetValue<string>("Jwt:Secret") ?? string.Empty;
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(
+        opts =>
+        {
+            opts.TokenValidationParameters = new()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = "stuartmillman",
+                ValidAudience = "stuartmillman",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+            };
+        }
+    );
+builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<ApiClient>();
@@ -37,6 +62,9 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

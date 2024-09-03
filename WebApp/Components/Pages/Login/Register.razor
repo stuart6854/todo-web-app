@@ -1,0 +1,19 @@
+@page "/Register"
+@using WebApp.Components.Layout
+@layout EmptyLayout
+
+<div class="p-5">
+    <a href="/login">Back to Login</a>
+    <EditForm Model="RegisterModel" FormName="Login" OnValidSubmit="HandleRegister">
+        <DataAnnotationsValidator/>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <InputText id="username" class="form-control" @bind-Value="RegisterModel.Username"/>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <InputText id="password" class="form-control" type="password" @bind-Value="RegisterModel.Password"/>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Register</button>
+    </EditForm>
+</div>

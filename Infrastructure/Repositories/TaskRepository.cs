@@ -1,10 +1,9 @@
 ﻿using Application;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure;
 
-public class TaskRepository(AppDbContext dbContext, IConfiguration configuration) : ITaskRepository
+public class TaskRepository(AppDbContext dbContext) : ITaskRepository
 {
     public async Task<IReadOnlyList<Domain.Task>> GetAllTasks()
     {
