@@ -10,7 +10,11 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(
-            opts => { opts.UseSqlServer(configuration.GetConnectionString("DefaultConnection")); }
+            opts =>
+            {
+                // opts.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+                opts.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+            }
         );
 
         services.AddScoped<ITaskRepository, TaskRepository>();
