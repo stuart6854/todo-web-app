@@ -16,12 +16,12 @@ public partial class Login
 
     private LoginModel LoginModel { get; set; } = new();
 
-    private bool AttemptingLogin { get; set; } = false;
+    private bool IsBusy { get; set; } = false;
     private string ErrorMessage { get; set; } = string.Empty;
 
     private async Task HandleLogin()
     {
-        AttemptingLogin = true;
+        IsBusy = true;
         ErrorMessage = string.Empty;
         StateHasChanged();
 
@@ -37,6 +37,6 @@ public partial class Login
             StateHasChanged();
         }
 
-        AttemptingLogin = false;
+        IsBusy = false;
     }
 }

@@ -17,12 +17,12 @@ public partial class Register
 
     private RegisterModel RegisterModel { get; set; } = new();
 
-    private bool AttemptingRegister { get; set; } = false;
+    private bool IsBusy { get; set; } = false;
     private string ErrorMessage { get; set; } = string.Empty;
 
     private async Task HandleRegister()
     {
-        AttemptingRegister = true;
+        IsBusy = true;
         ErrorMessage = string.Empty;
         StateHasChanged();
 
@@ -38,6 +38,6 @@ public partial class Register
             StateHasChanged();
         }
 
-        AttemptingRegister = false;
+        IsBusy = false;
     }
 }
