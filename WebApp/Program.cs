@@ -1,74 +1,96 @@
 using System.Text;
+using Application;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using WebApp;
 using WebApp.Authentication;
 using WebApp.Components;
 
-var builder = WebApplication.CreateBuilder(args);
+Logging.InitializeLogging();
 
-builder.Services.AddScoped(
-    scope =>
-    {
-        var navigation = scope.GetRequiredService<NavigationManager>();
-        return new HttpClient { BaseAddress = new Uri(navigation.BaseUri) };
-    }
-);
+try
+{
+    Log.Information("Creating Application builder");
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+    builder.Services.ConfigureLogging();
 
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
-
-var secret = builder.Configuration.GetValue<string>(Constants.JwtSecretName);
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(
-        opts =>
+    builder.Services.AddScoped(
+        scope =>
         {
-            opts.TokenValidationParameters = new()
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = "stuartmillman",
-                ValidAudience = "stuartmillman",
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
-            };
+            var navigation = scope.GetRequiredService<NavigationManager>();
+            return new HttpClient { BaseAddress = new Uri(navigation.BaseUri) };
         }
     );
-builder.Services.AddCascadingAuthenticationState();
 
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddScoped<ApiClient>();
+    builder.Services.AddControllers();
 
-// Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
-var app = builder.Build();
+    var secret = builder.Configuration.GetValue<string>(Constants.JwtSecretName);
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(
+            opts =>
+            {
+                opts.TokenValidationParameters = new()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "stuartmillman",
+                    ValidAudience = "stuartmillman",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+                };
+            }
+        );
+    builder.Services.AddCascadingAuthenticationState();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddScoped<ApiClient>();
+
+    // Add services to the container.
+    builder.Services.AddRazorComponents()
+        .AddInteractiveServerComponents();
+
+    Log.Information("Building Application");
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Error", createScopeForErrors: true);
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+    }
+
+    app.UseHttpsRedirection();
+
+    app.UseStaticFiles();
+    app.UseAntiforgery();
+
+    app.ConfigureLogging();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapRazorComponents<App>()
+        .AddInteractiveServerRenderMode();
+
+    app.MapControllers();
+
+    Log.Information("Running Application");
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();
-app.UseAntiforgery();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "The application failed to start correctly.");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
