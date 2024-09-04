@@ -14,7 +14,7 @@
         <div class="form-group">
             <label for="password">Password</label>
             <InputText id="password" class="form-control" type="password" @bind-Value="RegisterModel.Password"/>
-            <ValidationMessage For="() => RegisterModel.Username"/>
+            <ValidationMessage For="() => RegisterModel.Password"/>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Register</button>
     </EditForm>
