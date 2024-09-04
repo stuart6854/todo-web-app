@@ -19,9 +19,9 @@ public partial class Login
     private async Task HandleLogin()
     {
         var res = await ApiClient.PostAsync<LoginResponseModel, LoginModel>("/api/auth/login", LoginModel);
-        if (res is { Token: not null })
+        if (res.Success)
         {
-            await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsAuthenticated(res.Token);
+            await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsAuthenticated(res.Data.Token);
             NavManager.NavigateTo("/");
         }
     }

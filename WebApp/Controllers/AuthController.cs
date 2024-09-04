@@ -3,9 +3,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Application;
-using Azure.Identity;
+using Domain.Enums;
 using Domain.Models;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -22,38 +21,55 @@ public class AuthController(IAuthService authService, IConfiguration configurati
     [HttpPost("[action]")]
     public async Task<IActionResult> Register([FromBody] RegisterModel registerModel)
     {
+        var response = new ApiResponse<LoginResponseModel>();
+
         var user = await authService.GetUserByUsername(registerModel.Username);
         if (user != null)
         {
-            return BadRequest();
+            response.Success = false;
+            response.ErrorMessage = "Username is already taken!";
+        }
+        else
+        {
+            var passwordSalt = GeneratePasswordSaltHash();
+            var passwordHash = HashPassword(registerModel.Password, passwordSalt);
+            await authService.RegisterUser(registerModel.Username, passwordHash, Convert.ToHexString(passwordSalt));
+
+            var token = GenerateJwtToken(registerModel.Username);
+            response.Data = new LoginResponseModel { Token = token };
         }
 
-        var passwordSalt = GeneratePasswordSaltHash();
-        var passwordHash = HashPassword(registerModel.Password, passwordSalt);
-        user = await authService.RegisterUser(registerModel.Username, passwordHash, Convert.ToHexString(passwordSalt));
-
-        var token = GenerateJwtToken(registerModel.Username);
-        return Ok(new LoginResponseModel { Token = token });
+        return Ok(response);
     }
 
     [HttpPost("[action]")]
-    public async Task<ActionResult<LoginResponseModel>> Login([FromBody] LoginModel loginModel)
+    public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
     {
+        var response = new ApiResponse<LoginResponseModel>();
+
         var user = await authService.GetUserByUsername(loginModel.Username);
         if (user == null)
         {
-            return Unauthorized();
+            response.Success = false;
+            response.ErrorMessage = "Invalid username or password.";
         }
-
-        var storedSalt = Convert.FromHexString(user.PasswordSalt);
-        var hashedPassword = HashPassword(loginModel.Password, storedSalt);
-        if (hashedPassword != user.PasswordHash)
+        else
         {
-            return Unauthorized();
+            var storedSalt = Convert.FromHexString(user.PasswordSalt);
+            var hashedPassword = HashPassword(loginModel.Password, storedSalt);
+            if (hashedPassword != user.PasswordHash)
+            {
+                response.Success = false;
+                response.ErrorMessage = "Invalid username or password.";
+            }
+            else
+            {
+                var token = GenerateJwtToken(loginModel.Username);
+                response.Data = new LoginResponseModel { Token = token };
+            }
         }
 
-        var token = GenerateJwtToken(loginModel.Username);
-        return Ok(new LoginResponseModel { Token = token });
+        return Ok(response);
     }
 
     private string GenerateJwtToken(string username)

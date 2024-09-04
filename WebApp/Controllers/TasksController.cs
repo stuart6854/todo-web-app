@@ -11,16 +11,16 @@ namespace WebApp.Controllers;
 public class TasksController(ITaskService taskService) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<Domain.Task>>> GetAllTasks()
+    public async Task<IActionResult> GetAllTasks()
     {
         var tasks = await taskService.GetAllTasks();
-        return Ok(BaseResponseModel.Ok(tasks));
+        return Ok(new ApiResponse<IReadOnlyList<Domain.Task>> { Data = tasks });
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<IReadOnlyList<Domain.Task>>> GetTask(Guid id)
+    public async Task<ActionResult> GetTask(Guid id)
     {
         var task = await taskService.GetTask(id);
-        return Ok(BaseResponseModel.Ok(task));
+        return Ok(new ApiResponse<Domain.Task> { Data = task });
     }
 }

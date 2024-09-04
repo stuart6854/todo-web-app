@@ -16,10 +16,10 @@ public partial class Tasks
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
 
-        var res = await ApiClient.GetAsyncFromJson<BaseResponseModel>("/api/Tasks");
-        if (res is { Success: true })
+        var res = await ApiClient.GetAsyncFromJson<IReadOnlyList<Domain.Task>>("/api/Tasks");
+        if (res.Success)
         {
-            _tasks = JsonConvert.DeserializeObject<IReadOnlyList<Domain.Task>>(res.Data.ToString());
+            _tasks = res.Data;
         }
     }
 }
