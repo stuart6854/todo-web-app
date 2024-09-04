@@ -5,6 +5,7 @@ using System.Text;
 using Application;
 using Domain.Enums;
 using Domain.Models;
+using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -79,7 +80,7 @@ public class AuthController(IAuthService authService, IConfiguration configurati
             new Claim(ClaimTypes.Name, username),
             new Claim(ClaimTypes.Role, username == "Admin" ? "Admin" : "User"),
         };
-        var secret = configuration.GetValue<string>("Jwt:Secret");
+        var secret = configuration.GetValue<string>(Constants.JwtSecretName);
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

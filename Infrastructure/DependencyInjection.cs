@@ -12,8 +12,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(
             opts =>
             {
-                // opts.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-                opts.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+                opts.UseSqlite(configuration.GetConnectionString(Constants.ConnectionStringName));
             }
         );
 

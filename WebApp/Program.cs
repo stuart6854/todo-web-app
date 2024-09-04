@@ -22,7 +22,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
-var secret = builder.Configuration.GetValue<string>("Jwt_Secret");
+var secret = builder.Configuration.GetValue<string>(Constants.JwtSecretName);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(
         opts =>
