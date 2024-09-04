@@ -16,13 +16,27 @@ public partial class Login
 
     private LoginModel LoginModel { get; set; } = new();
 
+    private bool AttemptingLogin { get; set; } = false;
+    private string ErrorMessage { get; set; } = string.Empty;
+
     private async Task HandleLogin()
     {
+        AttemptingLogin = true;
+        ErrorMessage = string.Empty;
+        StateHasChanged();
+
         var res = await ApiClient.PostAsync<LoginResponseModel, LoginModel>("/api/auth/login", LoginModel);
         if (res.Success)
         {
             await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsAuthenticated(res.Data.Token);
             NavManager.NavigateTo("/");
         }
+        else
+        {
+            ErrorMessage = res.ErrorMessage;
+            StateHasChanged();
+        }
+
+        AttemptingLogin = false;
     }
 }
