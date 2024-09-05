@@ -9,10 +9,10 @@
         <tbody>
         <tr>
             <td>
-                <MudTextField @bind-Value="@_newProject.Name" Label="Title" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense"></MudTextField>
+                <MudTextField Label="Title" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense" @bind-Value="@_newProject.Name" For="() => _newProject.Name"/>
             </td>
             <td>
-                <MudTextField @bind-Value="@_newProject.Description" Label="Description" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense"></MudTextField>
+                <MudTextField Label="Description" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense" @bind-Value="@_newProject.Description" For="() => _newProject.Description"/>
             </td>
             <td>
                 <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Filled.Add"/>
