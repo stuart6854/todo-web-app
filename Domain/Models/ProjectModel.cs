@@ -10,6 +10,4 @@ public class ProjectModel
     public string Description { get; set; }
 
     public Guid OwningUserId { get; set; }
-    [ForeignKey("OwningUserId")]
-    public virtual User OwningUser { get; set; }
 }

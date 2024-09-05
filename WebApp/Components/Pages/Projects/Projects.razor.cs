@@ -20,13 +20,19 @@ public partial class Projects
     [Parameter]
     public int? ProjectIndex { get; set; } = null;
 
-    private List<Project> _projects = [];
+    private IReadOnlyList<Project> _projects = [];
     private bool _isLoading = false;
 
     private ProjectModel _newProject = new();
     private bool _isCreating = false;
 
     protected override async Task OnInitializedAsync()
+    {
+        CurrentUserId = ((CustomAuthStateProvider)AuthStateProvider).UserId;
+        await SyncProjectList();
+    }
+
+    private async Task SyncProjectList()
     {
         _isLoading = true;
         CurrentUserId = ((CustomAuthStateProvider)AuthStateProvider).UserId;
@@ -36,7 +42,8 @@ public partial class Projects
         if (res.Success)
         {
             Logger.LogInformation("Got back {count} projects for user: {userId}", res.Data.Count, CurrentUserId);
-            _projects = res.Data as List<Project> ?? [];
+            _projects = res.Data;
+            StateHasChanged();
         }
         else
         {
@@ -57,8 +64,8 @@ public partial class Projects
         if (res.Success)
         {
             Logger.LogInformation("Created new project: {title}", res.Data.Name);
-            _projects.Add(res.Data);
             _newProject = new ProjectModel();
+            await SyncProjectList();
         }
         else
         {
@@ -66,6 +73,5 @@ public partial class Projects
         }
 
         _isCreating = false;
-        StateHasChanged();
     }
 }

@@ -22,7 +22,7 @@ public class ProjectRepository(AppDbContext dbContext) : IProjectRepository
         {
             Name = projectModel.Name,
             Description = projectModel.Description,
-            OwningUser = projectModel.OwningUser,
+            OwningUserId = projectModel.OwningUserId,
         };
         dbContext.Projects.Attach(project);
         await dbContext.SaveChangesAsync();
