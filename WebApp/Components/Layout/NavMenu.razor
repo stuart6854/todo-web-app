@@ -1,29 +1,26 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">WebApp</a>
-    </div>
-</div>
+﻿@using WebApp.Authentication
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthStateProvider
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
+<MudNavMenu class="flex-column">
+    <MudNavLink href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
+    <MudNavLink href="counter" Icon="@Icons.Material.Filled.Numbers">Counter</MudNavLink>
+    <AuthorizeView>
+        <Authorized>
+            <MudDivider/>
+            <MudNavLink href="tasks" Icon="@Icons.Material.Filled.Task">Tasks</MudNavLink>
+            <MudDivider/>
+            <MudNavLink Icon="@Icons.Material.Filled.Logout" @onclick="HandleLogout">Logout</MudNavLink>
+        </Authorized>
+    </AuthorizeView>
+</MudNavMenu>
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+@code {
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
+    private async Task HandleLogout()
+    {
+        await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsLoggedOut();
+        NavManager.NavigateTo("/", forceLoad: true);
+    }
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="tasks">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Tasks
-            </NavLink>
-        </div>
-    </nav>
-</div>
+}
