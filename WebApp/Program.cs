@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using MudBlazor.Services;
 using Serilog;
 using WebApp;
 using WebApp.Authentication;
@@ -17,6 +18,8 @@ try
     Log.Information("Creating Application builder");
     var builder = WebApplication.CreateBuilder(args);
 
+    builder.Services.AddMudServices();
+    
     builder.Services.ConfigureLogging();
 
     builder.Services.AddScoped(

@@ -3,35 +3,19 @@
 
 <PageTitle>Tasks</PageTitle>
 
-<h1>Tasks</h1>
+<MudText Typo="Typo.h5">Tasks</MudText>
 
-@if (_tasks == null)
-{
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
-    <table class="table">
-        <thead>
-        <tr>
-            <th></th>
-            <th>Task</th>
-            <th>Created</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var task in _tasks)
-        {
-            <tr>
-                <td>@task.IsComplete</td>
-                <td>@task.Description</td>
-                <td></td>
-                <td></td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+<MudTable Items="@_tasks" Loading="@IsLoading">
+    <HeaderContent>
+        <MudTh></MudTh>
+        <MudTh>Task</MudTh>
+        <MudTh>Created</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="IsComplete">@context.IsComplete</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Created"></MudTd>
+        <MudTd DataLabel=""></MudTd>
+    </RowTemplate>
+</MudTable>

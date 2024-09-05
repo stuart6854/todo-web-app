@@ -1,6 +1,4 @@
-using Domain.Models;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
 
 namespace WebApp.Components.Pages;
 
@@ -10,9 +8,11 @@ public partial class Tasks
     private ApiClient ApiClient { get; set; }
 
     private IReadOnlyList<Domain.Task> _tasks = [];
+    private bool IsLoading { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
     {
+        IsLoading = true;
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
 
@@ -21,5 +21,7 @@ public partial class Tasks
         {
             _tasks = res.Data;
         }
+
+        IsLoading = false;
     }
 }

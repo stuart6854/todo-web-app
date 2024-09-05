@@ -2,21 +2,29 @@
 @using WebApp.Components.Layout
 @layout EmptyLayout
 
-<div class="p-5">
+<MudContainer Class="d-flex align-center justify-center mud-width-full" style="height:100vh;">
     <EditForm Model="LoginModel" FormName="Login" OnValidSubmit="HandleLogin">
-        <DataAnnotationsValidator/>
-        <div class="form-group">
-            <label for="username">Username</label>
-            <InputText id="username" class="form-control" @bind-Value="LoginModel.Username"/>
-            <ValidationMessage For="() => LoginModel.Username"/>
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <InputText id="password" class="form-control" type="password" @bind-Value="LoginModel.Password"/>
-            <ValidationMessage For="() => LoginModel.Password"/>
-        </div>
-        <button type="submit" class="btn btn-primary mt-3" disabled="@IsBusy">Login</button>
-    </EditForm>
+        <MudCard>
+            <DataAnnotationsValidator/>
+            <MudCardHeader>
+                <MudText Typo="Typo.h5">Login</MudText>
+            </MudCardHeader>
 
-    <p class="text-danger">@ErrorMessage</p>
-</div>
+            <MudCardContent>
+                <MudTextField Label="Username" id="username" @bind-Value="LoginModel.Username" For="() => LoginModel.Username"/>
+                <MudTextField Label="Password" id="password" @bind-Value="LoginModel.Password" For="() => LoginModel.Password"/>
+            </MudCardContent>
+
+            <MudCardActions>
+                <MudButton Class="d-flex flex-grow-1" ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" Disabled="@IsBusy">Login</MudButton>
+            </MudCardActions>
+
+            <MudDivider DividerType="DividerType.Middle"/>
+            
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Button" Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" Href="/register">Register</MudButton>
+            </MudCardActions>
+        </MudCard>
+        <MudText Color="Color.Error">@ErrorMessage</MudText>
+    </EditForm>
+</MudContainer>
