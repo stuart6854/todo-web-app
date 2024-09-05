@@ -14,6 +14,14 @@ public class CustomAuthStateProvider(ProtectedLocalStorage localStorage) : Authe
     {
         var token = (await localStorage.GetAsync<string>("authToken")).Value;
         var identity = string.IsNullOrEmpty(token) ? new ClaimsIdentity() : GetClaimsIdentity(token);
+        
+        var nameIdClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
+        if (nameIdClaim != null)
+        {
+            var userIdString = nameIdClaim.Value;
+            UserId = Guid.Parse(userIdString);
+        }
+
         var user = new ClaimsPrincipal(identity);
         return new AuthenticationState(user);
     }

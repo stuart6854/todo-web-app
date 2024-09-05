@@ -59,17 +59,17 @@ public partial class Projects
 
         _newProject.OwningUserId = CurrentUserId;
 
-        Logger.LogInformation("Creating new project");
+        Logger.LogInformation("Creating new project for user {userId}", CurrentUserId);
         var res = await ApiClient.PostAsync<Project, ProjectModel>("/api/projects", _newProject);
         if (res.Success)
         {
-            Logger.LogInformation("Created new project: {title}", res.Data.Name);
+            Logger.LogInformation("Created new project for user {userId}: {title}", CurrentUserId, res.Data.Name);
             _newProject = new ProjectModel();
             await SyncProjectList();
         }
         else
         {
-            Logger.LogError("Failed to create project: {title}", _newProject.Name);
+            Logger.LogError("Failed to create project for user {userId}", CurrentUserId);
         }
 
         _isCreating = false;
