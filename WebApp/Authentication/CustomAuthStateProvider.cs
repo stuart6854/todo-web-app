@@ -2,11 +2,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Task = System.Threading.Tasks.Task;
 
 namespace WebApp.Authentication;
 
 public class CustomAuthStateProvider(ProtectedLocalStorage localStorage) : AuthenticationStateProvider
 {
+    public Guid UserId { get; private set; }
+
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var token = (await localStorage.GetAsync<string>("authToken")).Value;
@@ -20,6 +23,7 @@ public class CustomAuthStateProvider(ProtectedLocalStorage localStorage) : Authe
         await localStorage.SetAsync("authToken", token);
         var identity = GetClaimsIdentity(token);
         var user = new ClaimsPrincipal(identity);
+        UserId = Guid.Parse((ReadOnlySpan<char>)user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
     }
 

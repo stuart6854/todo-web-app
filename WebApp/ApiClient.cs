@@ -1,7 +1,8 @@
 using System.Net.Http.Headers;
-using Domain.Models;
+using Domain;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Newtonsoft.Json;
+using Task = System.Threading.Tasks.Task;
 
 namespace WebApp;
 

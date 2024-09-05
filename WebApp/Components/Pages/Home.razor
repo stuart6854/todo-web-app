@@ -1,7 +1,13 @@
 ﻿@page "/"
+@using WebApp.Components.Pages.Projects
 
 <PageTitle>Home</PageTitle>
 
-<MudText Typo="Typo.h5" >Hello, world!</MudText>
-
-<MudText>Welcome to your new app.</MudText>
+<AuthorizeView>
+    <NotAuthorized>
+        <MudText>*Insert some content for unauthorized users.*</MudText>
+    </NotAuthorized>
+    <Authorized>
+        <MudText>*Insert some content for authorized users. ie. project/task stats.*</MudText>
+    </Authorized>
+</AuthorizeView>

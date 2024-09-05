@@ -1,4 +1,4 @@
-namespace Domain.Enums;
+namespace Domain;
 
 public enum UserRole
 {
