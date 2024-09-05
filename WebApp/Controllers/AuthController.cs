@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Application;
-using Domain.Enums;
+using Domain;
 using Domain.Models;
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -34,9 +34,9 @@ public class AuthController(IAuthService authService, IConfiguration configurati
         {
             var passwordSalt = GeneratePasswordSaltHash();
             var passwordHash = HashPassword(registerModel.Password, passwordSalt);
-            await authService.RegisterUser(registerModel.Username, passwordHash, Convert.ToHexString(passwordSalt));
+            user = await authService.RegisterUser(registerModel.Username, passwordHash, Convert.ToHexString(passwordSalt));
 
-            var token = GenerateJwtToken(registerModel.Username);
+            var token = GenerateJwtToken(user.Id, user.Username);
             response.Data = new LoginResponseModel { Token = token };
         }
 
@@ -65,7 +65,7 @@ public class AuthController(IAuthService authService, IConfiguration configurati
             }
             else
             {
-                var token = GenerateJwtToken(loginModel.Username);
+                var token = GenerateJwtToken(user.Id, user.Username);
                 response.Data = new LoginResponseModel { Token = token };
             }
         }
@@ -73,10 +73,11 @@ public class AuthController(IAuthService authService, IConfiguration configurati
         return Ok(response);
     }
 
-    private string GenerateJwtToken(string username)
+    private string GenerateJwtToken(Guid userId, string username)
     {
         var claims = new[]
         {
+            new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
             new Claim(ClaimTypes.Name, username),
             new Claim(ClaimTypes.Role, username == "Admin" ? "Admin" : "User"),
         };

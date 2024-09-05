@@ -1,5 +1,3 @@
-using Domain.Enums;
-
 namespace Domain;
 
 public class User

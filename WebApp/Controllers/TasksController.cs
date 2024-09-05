@@ -1,5 +1,5 @@
 using Application;
-using Domain.Models;
+using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

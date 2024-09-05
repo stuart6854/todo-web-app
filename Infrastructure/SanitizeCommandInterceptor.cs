@@ -1,7 +1,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
-using Domain.Extensions;
+using Domain;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Infrastructure;

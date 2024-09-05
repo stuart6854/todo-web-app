@@ -1,6 +1,6 @@
 using Ganss.Xss;
 
-namespace Domain.Extensions;
+namespace Domain;
 
 public static class StringExtensions
 {
