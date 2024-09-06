@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace WebApp.Components.Pages;
+namespace WebApp.Components.Pages.Tasks;
 
 public partial class Tasks
 {
