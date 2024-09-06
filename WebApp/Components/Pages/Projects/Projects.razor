@@ -1,68 +1,33 @@
 @page "/projects"
-@page "/projects/{ProjectId}"
 @using Domain
 
-@if (ProjectId == null)
-{
-    <MudText Class="pb-4" Typo="Typo.h4">Projects</MudText>
+<MudText Class="pb-4" Typo="Typo.h4">Projects</MudText>
 
-    <EditForm Model="@_newProject" OnValidSubmit="HandleCreateProject" disabled="@_isCreating">
-        <DataAnnotationsValidator/>
-        <MudSimpleTable Dense="true" Hover="false">
-            <tbody>
-            <tr>
-                <td>
-                    <MudTextField Label="Title" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense" @bind-Value="@_newProject.Name" For="() => _newProject.Name"/>
-                </td>
-                <td>
-                    <MudTextField Label="Description" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense" @bind-Value="@_newProject.Description" For="() => _newProject.Description"/>
-                </td>
-                <td>
-                    <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Filled.Add"/>
-                </td>
-            </tr>
-            </tbody>
-        </MudSimpleTable>
-    </EditForm>
+<EditForm Model="@_newProject" OnValidSubmit="HandleCreateProject" disabled="@_isCreating">
+    <DataAnnotationsValidator/>
+    <MudSimpleTable Dense="true" Hover="false">
+        <tbody>
+        <tr>
+            <td>
+                <MudTextField Label="Title" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense" @bind-Value="@_newProject.Name" For="() => _newProject.Name"/>
+            </td>
+            <td>
+                <MudTextField Label="Description" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense" @bind-Value="@_newProject.Description" For="() => _newProject.Description"/>
+            </td>
+            <td>
+                <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Filled.Add"/>
+            </td>
+        </tr>
+        </tbody>
+    </MudSimpleTable>
+</EditForm>
 
-    <MudTable T="Project" Items="@_projects" Dense="false" Hover="true" Loading="@_isLoading" OnRowClick="HandleProjectClick" Class="mt-4">
-        <RowTemplate>
-            <MudTd Class="">@context.Name</MudTd>
-            <MudTd Class="">@context.Description</MudTd>
-            <MudTd Class="d-flex justify-end">
-                <MudIconButton Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Filled.Delete"/>
-            </MudTd>
-        </RowTemplate>
-    </MudTable>
-}
-else if (SelectedProject != null)
-{
-    <MudText Class="pb-4" Typo="Typo.h4">Project '@SelectedProject.Name'</MudText>
-
-    <MudText>*Insert some more detailed info for this project and stats. eg. CompletedTasks/TotalTasks, etc. *</MudText>
-    
-    <EditForm Model="@_newProjectTask" OnValidSubmit="HandleCreateTask" disabled="@_isCreating">
-        <DataAnnotationsValidator/>
-        <MudSimpleTable Dense="true" Hover="false">
-            <tbody>
-            <tr>
-                <td>
-                    <MudTextField Label="Description" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense" @bind-Value="@_newProjectTask.Description" For="() => _newProjectTask.Description"/>
-                </td>
-                <td>
-                    <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Filled.Add"/>
-                </td>
-            </tr>
-            </tbody>
-        </MudSimpleTable>
-    </EditForm>
-
-    <MudTable T="ProjectTask" Items="@_tasks" Dense="false" Hover="true" Loading="@_isLoading" OnRowClick="HandleTaskClick" Class="mt-4">
-        <RowTemplate>
-            <MudTd Class="">@context.Description</MudTd>
-            <MudTd Class="d-flex justify-end">
-                <MudIconButton Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Filled.Delete"/>
-            </MudTd>
-        </RowTemplate>
-    </MudTable>
-}
+<MudTable T="Project" Items="@_projects" Dense="false" Hover="true" Loading="@_isLoading" OnRowClick="HandleProjectClick" Class="mt-4">
+    <RowTemplate>
+        <MudTd Class="">@context.Name</MudTd>
+        <MudTd Class="">@context.Description</MudTd>
+        <MudTd Class="d-flex justify-end">
+            <MudIconButton Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Filled.Delete"/>
+        </MudTd>
+    </RowTemplate>
+</MudTable>
