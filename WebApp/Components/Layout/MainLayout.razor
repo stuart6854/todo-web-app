@@ -2,6 +2,7 @@
 
 <MudLayout>
     <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@ToggleDrawer"/>
         <MudText Typo="Typo.h5" Class="ml-1">ToDo Web App</MudText>
         <MudSpacer/>
         <AuthorizeView>
@@ -14,7 +15,7 @@
         </AuthorizeView>
     </MudAppBar>
 
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="1">
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="1" Variant="DrawerVariant.Responsive">
         <NavMenu/>
     </MudDrawer>
 
@@ -31,4 +32,10 @@
 
 @code{
     bool _drawerOpen = true;
+
+    void ToggleDrawer()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
 }
