@@ -1,14 +1,26 @@
-﻿namespace Application;
+﻿using Domain;
+
+namespace Application;
 
 public class TaskService(ITaskRepository taskRepository) : ITaskService
 {
-    public async Task<IReadOnlyList<Domain.Task>> GetAllTasks()
+    public async Task<IReadOnlyList<ProjectTask>> GetAllTasks()
     {
         return await taskRepository.GetAllTasks();
     }
 
-    public async Task<Domain.Task> GetTask(Guid id)
+    public async Task<IReadOnlyList<ProjectTask>> GetAllTasksByProjectId(Guid projectId)
+    {
+        return await taskRepository.GetAllTasksByProjectId(projectId);
+    }
+
+    public async Task<ProjectTask> GetTask(Guid id)
     {
         return await taskRepository.GetTask(id);
+    }
+
+    public async Task<ProjectTask> CreateTask(ProjectTaskModel projectTask)
+    {
+        return await taskRepository.CreateTask(projectTask);
     }
 }

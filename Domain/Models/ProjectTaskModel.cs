@@ -2,11 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Domain;
 
-public class ProjectModel
+public class ProjectTaskModel
 {
     [Required]
-    public string Name { get; set; }
     public string Description { get; set; }
-
-    public Guid OwningUserId { get; set; }
+    public Guid OwningProjectId { get; set; }
 }

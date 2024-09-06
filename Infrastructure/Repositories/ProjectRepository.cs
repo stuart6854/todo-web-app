@@ -13,7 +13,7 @@ public class ProjectRepository(AppDbContext dbContext) : IProjectRepository
 
     public async Task<Project> GetProject(Guid id)
     {
-        return await dbContext.Projects.FirstOrDefaultAsync(t => t.Id == id) ?? new Domain.Project();
+        return await dbContext.Projects.FirstOrDefaultAsync(t => t.Id == id) ?? new Project();
     }
 
     public async Task<Project> CreateProject(ProjectModel projectModel)

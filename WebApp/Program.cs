@@ -19,7 +19,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.AddMudServices();
-    
+
     builder.Services.ConfigureLogging();
 
     builder.Services.AddScoped(
@@ -89,7 +89,8 @@ try
     Log.Information("Running Application");
     app.Run();
 }
-catch (Exception ex)
+catch (Exception ex) when
+    (ex is not HostAbortedException && ex.Source != "Microsoft.EntityFrameworkCore.Design") // see https://github.com/dotnet/efcore/issues/29923
 {
     Log.Fatal(ex, "The application failed to start correctly.");
 }

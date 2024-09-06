@@ -12,5 +12,5 @@ public class Project
     [ForeignKey("OwningUserId")]
     public virtual User OwningUser { get; set; }
 
-    public ICollection<Task> Tasks { get; }
+    public ICollection<ProjectTask> Tasks { get; }
 }

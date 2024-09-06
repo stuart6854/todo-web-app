@@ -10,7 +10,8 @@ public class ApiClient(HttpClient httpClient, ProtectedLocalStorage localStorage
 {
     public async Task SetAuthorizeHeader()
     {
-        var token = (await localStorage.GetAsync<string>("authToken")).Value;
+        var tokenStorage = await localStorage.GetAsync<string>("authToken");
+        var token = tokenStorage.Value;
         if (token != null)
         {
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);

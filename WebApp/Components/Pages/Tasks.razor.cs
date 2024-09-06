@@ -7,7 +7,10 @@ public partial class Tasks
     [Inject]
     private ApiClient ApiClient { get; set; }
 
-    private IReadOnlyList<Domain.Task> _tasks = [];
+    [Parameter]
+    public string TaskId { get; set; }
+
+    private IReadOnlyList<Domain.ProjectTask> _tasks = [];
     private bool IsLoading { get; set; } = true;
 
     protected override async Task OnInitializedAsync()
@@ -16,7 +19,7 @@ public partial class Tasks
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
 
-        var res = await ApiClient.GetAsyncFromJson<IReadOnlyList<Domain.Task>>("/api/Tasks");
+        var res = await ApiClient.GetAsyncFromJson<IReadOnlyList<Domain.ProjectTask>>("/api/Tasks");
         if (res.Success)
         {
             _tasks = res.Data;

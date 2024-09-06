@@ -14,13 +14,27 @@ public class TasksController(ITaskService taskService) : ControllerBase
     public async Task<IActionResult> GetAllTasks()
     {
         var tasks = await taskService.GetAllTasks();
-        return Ok(new ApiResponse<IReadOnlyList<Domain.Task>> { Data = tasks });
+        return Ok(new ApiResponse<IReadOnlyList<ProjectTask>> { Data = tasks });
+    }
+
+    [HttpGet("project/{projectId:guid}")]
+    public async Task<IActionResult> GetAllTaskByProjectId([FromRoute] Guid projectId)
+    {
+        var tasks = await taskService.GetAllTasksByProjectId(projectId);
+        return Ok(new ApiResponse<IReadOnlyList<ProjectTask>> { Data = tasks });
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult> GetTask(Guid id)
+    public async Task<IActionResult> GetTask(Guid id)
     {
         var task = await taskService.GetTask(id);
-        return Ok(new ApiResponse<Domain.Task> { Data = task });
+        return Ok(new ApiResponse<ProjectTask> { Data = task });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateTask(ProjectTaskModel projectTaskModel)
+    {
+        var task = await taskService.CreateTask(projectTaskModel);
+        return Ok(new ApiResponse<ProjectTask> { Data = task });
     }
 }
