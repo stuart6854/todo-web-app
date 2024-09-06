@@ -29,7 +29,7 @@ public partial class ProjectDetail
     protected override async Task OnInitializedAsync()
     {
         Logger.LogInformation("Getting project: {projectId}", ProjectId);
-        var res = await ApiClient.GetAsyncFromJson<Project>($"/api/projects/{ProjectId}");
+        var res = await ApiClient.GetFromJsonAsync<Project>($"/api/projects/{ProjectId}");
         if (res.Success)
         {
             Logger.LogInformation("Received project: {projectId}", res.Data.Id);
@@ -48,7 +48,7 @@ public partial class ProjectDetail
         _isLoading = true;
 
         Logger.LogInformation("Getting tasks for project: {projectId}", ProjectId);
-        var res = await ApiClient.GetAsyncFromJson<IReadOnlyList<ProjectTask>>($"/api/tasks/project/{ProjectId}");
+        var res = await ApiClient.GetFromJsonAsync<IReadOnlyList<ProjectTask>>($"/api/tasks/project/{ProjectId}");
         if (res.Success)
         {
             Logger.LogInformation("Got back {count} tasks for project: {projectId}", res.Data.Count, ProjectId);

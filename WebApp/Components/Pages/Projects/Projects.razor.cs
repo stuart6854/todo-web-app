@@ -37,7 +37,7 @@ public partial class Projects
         CurrentUserId = ((CustomAuthStateProvider)AuthStateProvider).UserId;
 
         Logger.LogInformation("Getting projects for user: {userId}", CurrentUserId);
-        var res = await ApiClient.GetAsyncFromJson<IReadOnlyList<Project>>($"/api/projects/user/{CurrentUserId}");
+        var res = await ApiClient.GetFromJsonAsync<IReadOnlyList<Project>>($"/api/projects/user/{CurrentUserId}");
         if (res.Success)
         {
             Logger.LogInformation("Got back {count} projects for user: {userId}", res.Data.Count, CurrentUserId);

@@ -18,7 +18,7 @@ public class ApiClient(HttpClient httpClient, ProtectedLocalStorage localStorage
         }
     }
 
-    public async Task<ApiResponse<TResponse>> GetAsyncFromJson<TResponse>(string url)
+    public async Task<ApiResponse<TResponse>> GetFromJsonAsync<TResponse>(string url)
     {
         await SetAuthorizeHeader();
         var res = await httpClient.GetAsync(url);
