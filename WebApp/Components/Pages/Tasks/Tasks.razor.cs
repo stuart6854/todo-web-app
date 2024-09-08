@@ -7,9 +7,6 @@ public partial class Tasks
     [Inject]
     private ApiClient ApiClient { get; set; }
 
-    [Parameter]
-    public string TaskId { get; set; }
-
     private IReadOnlyList<Domain.ProjectTask> _tasks = [];
     private bool IsLoading { get; set; } = true;
 

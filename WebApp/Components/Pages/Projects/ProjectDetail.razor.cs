@@ -87,6 +87,6 @@ public partial class ProjectDetail
 
     private void HandleTaskClick(TableRowClickEventArgs<ProjectTask> clickEventArgs)
     {
-        NavManager.NavigateTo(NavManager.BaseUri + "/tasks/" + clickEventArgs.Item.Id, forceLoad: true);
+        NavManager.NavigateTo(NavManager.BaseUri + "tasks/" + clickEventArgs.Item.Id, forceLoad: true);
     }
 }

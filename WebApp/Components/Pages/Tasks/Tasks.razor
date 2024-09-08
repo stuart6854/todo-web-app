@@ -1,33 +1,22 @@
 ﻿@page "/tasks"
-@page "/tasks/{TaskId}"
-@attribute [StreamRendering]
 
-@if (TaskId == null)
-{
-    <PageTitle>Tasks</PageTitle>
+<PageTitle>Tasks</PageTitle>
 
-    <MudText Typo="Typo.h5">Tasks</MudText>
+<MudText Typo="Typo.h5">Tasks</MudText>
 
-    <MudTable Items="@_tasks" Loading="@IsLoading">
-        <HeaderContent>
-            <MudTh></MudTh>
-            <MudTh>Task</MudTh>
-            <MudTh>Created</MudTh>
-            <MudTh>Project</MudTh>
-            <MudTh></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="IsComplete">@context.IsComplete</MudTd>
-            <MudTd DataLabel="Description">@context.Description</MudTd>
-            <MudTd DataLabel="Created"></MudTd>
-            <MudTd DataLabel="Project"></MudTd>
-            <MudTd DataLabel=""></MudTd>
-        </RowTemplate>
-    </MudTable>
-}
-else
-{
-    <MudText>*Insert some more detailed info for this task. *</MudText>
-
-    <MudText>*List the projects tasks*</MudText>
-}
+<MudTable Items="@_tasks" Loading="@IsLoading">
+    <HeaderContent>
+        <MudTh></MudTh>
+        <MudTh>Task</MudTh>
+        <MudTh>Created</MudTh>
+        <MudTh>Project</MudTh>
+        <MudTh></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="IsComplete">@context.IsComplete</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Created"></MudTd>
+        <MudTd DataLabel="Project"></MudTd>
+        <MudTd DataLabel=""></MudTd>
+    </RowTemplate>
+</MudTable>

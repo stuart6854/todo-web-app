@@ -1,0 +1,8 @@
+﻿@page "/tasks/{TaskId}"
+
+@if (Task != null)
+{
+    <MudText Typo="Typo.h5">Task: @Task.Description</MudText>
+
+    <MudText>*Insert some more detailed info for this task. *</MudText>
+}
