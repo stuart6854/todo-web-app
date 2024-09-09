@@ -1,10 +1,9 @@
 using Domain;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
 
 namespace WebApp.Components.Pages.Tasks;
 
-public partial class TaskDetail : IDisposable
+public partial class TaskDetail
 {
     [Inject]
     private ILogger<TaskDetail> Logger { get; set; }
@@ -16,17 +15,21 @@ public partial class TaskDetail : IDisposable
     [Parameter]
     public string TaskId { get; set; }
     private ProjectTask Task { get; set; }
+    private bool ChangesMade => Task.Description != InitialDescription || Task.IsComplete != InitialCompleted;
+    private bool EnableSaveButton => !ChangesMade;
+
+    private bool InitialCompleted { get; set; }
+    private string InitialDescription { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        NavManager.LocationChanged += OnLocationChanged;
-
         Logger.LogInformation("Getting task: {taskId}", TaskId);
         var res = await ApiClient.GetFromJsonAsync<ProjectTask>("/api/tasks/" + TaskId);
         if (res.Success)
         {
             Logger.LogInformation("Successfully got task: {taskId}", TaskId);
             Task = res.Data;
+            UpdateInitialValues();
         }
         else
         {
@@ -34,17 +37,19 @@ public partial class TaskDetail : IDisposable
         }
     }
 
-    public void Dispose()
+    private void UpdateInitialValues()
     {
-        NavManager.LocationChanged -= OnLocationChanged;
+        InitialCompleted = Task.IsComplete;
+        InitialDescription = Task.Description;
     }
 
-    private async void OnLocationChanged(object sender, LocationChangedEventArgs e)
+    private async Task UpdateTaskChanges()
     {
-        var res = await ApiClient.PutAsync<ProjectTask, ProjectTask>("/api/tasks/" + TaskId, Task);
+        var res = await ApiClient.PutAsync<ProjectTask, ProjectTask>("/api/tasks", Task);
         if (res.Success)
         {
             Logger.LogInformation("Successfully updated task: {taskId}", TaskId);
+            UpdateInitialValues();
         }
         else
         {

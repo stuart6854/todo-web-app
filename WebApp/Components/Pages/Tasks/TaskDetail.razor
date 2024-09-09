@@ -2,20 +2,25 @@
 
 @if (Task != null)
 {
+    <NavigationLock ConfirmExternalNavigation="@ChangesMade"/>
+
     <MudText Typo="Typo.h5">Task: @Task.Title</MudText>
 
     <MudText>*Insert some more detailed info for this task. *</MudText>
     <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
         <MudGrid>
-            <MudItem xs="12" sm="12" md="4">
+            <MudItem xs="12" sm="12" md="9">
                 <MudPaper Elevation="1" Class="pa-4">
-                    <MudTextField T="string" Label="Description" Variant="Variant.Outlined" Text="@Task.Description" Lines="6"/>
+                    <MudTextField T="string" Label="Description" Variant="Variant.Outlined" @bind-Value="Task.Description" Lines="6" Immediate="true"/>
                 </MudPaper>
             </MudItem>
-            <MudItem xs="6" sm="3" md="4">
+            <MudItem xs="6" sm="3" md="3">
                 <MudPaper Elevation="1" Class="pa-4">
                     <MudCheckBox Label="Completed" Size="Size.Large" @bind-Value="@Task.IsComplete"/>
                 </MudPaper>
+            </MudItem>
+            <MudItem xs="12">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="UpdateTaskChanges" Disabled="EnableSaveButton">Save Changes</MudButton>
             </MudItem>
         </MudGrid>
     </MudContainer>

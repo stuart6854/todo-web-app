@@ -33,4 +33,17 @@ public class TaskRepository(AppDbContext dbContext) : ITaskRepository
         await dbContext.SaveChangesAsync();
         return task;
     }
+
+    public async Task<ProjectTask> UpdateTask(ProjectTask projectTask)
+    {
+        var task = await GetTask(projectTask.Id);
+
+        task.Title = projectTask.Title;
+        task.Description = projectTask.Description;
+        task.IsComplete = projectTask.IsComplete;
+
+        dbContext.Tasks.Update(task);
+        await dbContext.SaveChangesAsync();
+        return task;
+    }
 }

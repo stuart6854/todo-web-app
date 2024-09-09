@@ -23,4 +23,9 @@ public class TaskService(ITaskRepository taskRepository) : ITaskService
     {
         return await taskRepository.CreateTask(projectTask);
     }
+
+    public async Task<ProjectTask> UpdateTask(ProjectTask projectTask)
+    {
+        return await taskRepository.UpdateTask(projectTask);
+    }
 }

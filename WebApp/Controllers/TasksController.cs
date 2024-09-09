@@ -37,4 +37,11 @@ public class TasksController(ITaskService taskService) : ControllerBase
         var task = await taskService.CreateTask(projectTaskModel);
         return Ok(new ApiResponse<ProjectTask> { Data = task });
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateTask(ProjectTask projectTaskModel)
+    {
+        var task = await taskService.UpdateTask(projectTaskModel);
+        return Ok(new ApiResponse<ProjectTask> { Data = task });
+    }
 }
