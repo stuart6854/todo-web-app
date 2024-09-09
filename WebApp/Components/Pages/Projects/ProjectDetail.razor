@@ -24,6 +24,11 @@
     </EditForm>
 
     <MudTable T="ProjectTask" Items="@_tasks" Dense="false" Hover="true" Loading="@_isLoading" OnRowClick="HandleTaskClick" Class="mt-4">
+        <ColGroup>
+            <col style="width: 60px;"/>
+            <col/>
+            <col style="width: 60px;">
+        </ColGroup>
         <RowTemplate>
             <MudTd>
                 <MudCheckBox Size="Size.Medium" @bind-Value="@context.IsComplete"/>
