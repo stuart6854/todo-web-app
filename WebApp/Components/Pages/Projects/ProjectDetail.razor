@@ -31,7 +31,7 @@
         </ColGroup>
         <RowTemplate>
             <MudTd>
-                <MudCheckBox Size="Size.Medium" @bind-Value="@context.IsComplete"/>
+                <MudCheckBox Size="Size.Medium" @bind-Value="@context.IsComplete" @onclick="() => OnCompleteChanged(context)"/>
             </MudTd>
             <MudTd Class="">@context.Title</MudTd>
             <MudTd Class="d-flex justify-end">

@@ -89,4 +89,17 @@ public partial class ProjectDetail
     {
         NavManager.NavigateTo(NavManager.BaseUri + "tasks/" + clickEventArgs.Item.Id, forceLoad: true);
     }
+
+    private async Task OnCompleteChanged(ProjectTask task)
+    {
+        var res = await ApiClient.PutAsync<ProjectTask, ProjectTask>("/api/tasks", task);
+        if (res.Success)
+        {
+            Logger.LogInformation("Successfully updated task: {taskId}", task.Id);
+        }
+        else
+        {
+            Logger.LogError("Failed to update task {taskId}: {errorMessage}", task.Id, res.ErrorMessage);
+        }
+    }
 }
