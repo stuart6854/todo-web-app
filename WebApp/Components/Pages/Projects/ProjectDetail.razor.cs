@@ -15,6 +15,8 @@ public partial class ProjectDetail
     private AuthenticationStateProvider AuthStateProvider { get; set; }
     [Inject]
     private NavigationManager NavManager { get; set; }
+    [Inject]
+    private ISnackbar Snackbar { get; set; }
 
     [Parameter]
     public string ProjectId { get; set; }
@@ -96,10 +98,12 @@ public partial class ProjectDetail
         if (res.Success)
         {
             Logger.LogInformation("Successfully updated task: {taskId}", task.Id);
+            Snackbar.Add($"Updated task status.", Severity.Success);
         }
         else
         {
             Logger.LogError("Failed to update task {taskId}: {errorMessage}", task.Id, res.ErrorMessage);
+            Snackbar.Add($"Failed to update task status.", Severity.Error);
         }
     }
 }

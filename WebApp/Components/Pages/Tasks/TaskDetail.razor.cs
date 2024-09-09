@@ -1,5 +1,6 @@
 using Domain;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace WebApp.Components.Pages.Tasks;
 
@@ -11,6 +12,8 @@ public partial class TaskDetail
     private ApiClient ApiClient { get; set; }
     [Inject]
     private NavigationManager NavManager { get; set; }
+    [Inject]
+    private ISnackbar Snackbar { get; set; }
 
     [Parameter]
     public string TaskId { get; set; }
@@ -50,10 +53,12 @@ public partial class TaskDetail
         {
             Logger.LogInformation("Successfully updated task: {taskId}", TaskId);
             UpdateInitialValues();
+            Snackbar.Add($"Updated task details.", Severity.Success);
         }
         else
         {
             Logger.LogError("Failed to update task {taskId}: {errorMessage}", TaskId, res.ErrorMessage);
+            Snackbar.Add($"Failed to update task details.", Severity.Error);
         }
     }
 }
