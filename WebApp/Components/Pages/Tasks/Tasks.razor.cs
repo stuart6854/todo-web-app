@@ -13,8 +13,6 @@ public partial class Tasks
     protected override async Task OnInitializedAsync()
     {
         IsLoading = true;
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
 
         var res = await ApiClient.GetFromJsonAsync<IReadOnlyList<Domain.ProjectTask>>("/api/Tasks");
         if (res.Success)
