@@ -13,7 +13,7 @@
             <tbody>
             <tr>
                 <td>
-                    <MudTextField Label="Description" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense" @bind-Value="@_newProjectTask.Description" For="() => _newProjectTask.Description"/>
+                    <MudTextField Label="Title" Typo="Typo.input" Variant="Variant.Outlined" ShrinkLabel="true" Margin="Margin.Dense" @bind-Value="@_newProjectTask.Title" For="() => _newProjectTask.Title"/>
                 </td>
                 <td>
                     <MudIconButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Icon="@Icons.Material.Filled.Add"/>
@@ -25,7 +25,10 @@
 
     <MudTable T="ProjectTask" Items="@_tasks" Dense="false" Hover="true" Loading="@_isLoading" OnRowClick="HandleTaskClick" Class="mt-4">
         <RowTemplate>
-            <MudTd Class="">@context.Description</MudTd>
+            <MudTd>
+                <MudCheckBox Size="Size.Medium" @bind-Value="@context.IsComplete"/>
+            </MudTd>
+            <MudTd Class="">@context.Title</MudTd>
             <MudTd Class="d-flex justify-end">
                 <MudIconButton Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Filled.Delete"/>
             </MudTd>

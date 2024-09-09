@@ -25,6 +25,7 @@ public class TaskRepository(AppDbContext dbContext) : ITaskRepository
     {
         var task = new ProjectTask
         {
+            Title = projectTask.Title,
             Description = projectTask.Description,
             ProjectId = projectTask.OwningProjectId,
         };
