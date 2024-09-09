@@ -501,5 +501,6 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
+*.sqlite
 *.*-shm
 *.*-wal
