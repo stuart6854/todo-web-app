@@ -9,4 +9,5 @@ public interface ITaskRepository
     Task<ProjectTask> GetTask(Guid id);
     Task<ProjectTask> CreateTask(ProjectTaskModel projectTask);
     Task<ProjectTask> UpdateTask(ProjectTask projectTask);
+    Task DeleteTask(Guid id);
 }

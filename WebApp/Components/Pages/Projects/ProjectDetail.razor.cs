@@ -2,6 +2,7 @@ using Domain;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
+using WebApp.Components.Pages.Shared;
 
 namespace WebApp.Components.Pages.Projects;
 
@@ -17,6 +18,8 @@ public partial class ProjectDetail
     private NavigationManager NavManager { get; set; }
     [Inject]
     private ISnackbar Snackbar { get; set; }
+    [Inject]
+    private IDialogService Dialog { get; set; }
 
     [Parameter]
     public string ProjectId { get; set; }
@@ -104,6 +107,24 @@ public partial class ProjectDetail
         {
             Logger.LogError("Failed to update task {taskId}: {errorMessage}", task.Id, res.ErrorMessage);
             Snackbar.Add($"Failed to update task status.", Severity.Error);
+        }
+    }
+
+    private async Task OnDeleteTask(ProjectTask task)
+    {
+        var parameters = new DialogParameters<DialogTemplate>()
+        {
+            { d => d.ContentText, "Are you sure you want to delete this task?" },
+            { d => d.ButtonText, "Delete" },
+            { d => d.Color, Color.Error }
+        };
+        var options = new DialogOptions { CloseButton = false, MaxWidth = MaxWidth.ExtraSmall };
+        var dialog = await Dialog.ShowAsync<DialogTemplate>("Delete Task", parameters, options);
+        var confirmed = await dialog.GetReturnValueAsync<bool>();
+        if (confirmed)
+        {
+            await ApiClient.DeleteAsync<bool>("/api/tasks/" + task.Id);
+            await SyncTaskList();
         }
     }
 }

@@ -46,4 +46,11 @@ public class TaskRepository(AppDbContext dbContext) : ITaskRepository
         await dbContext.SaveChangesAsync();
         return task;
     }
+
+    public async Task DeleteTask(Guid id)
+    {
+        var task = await GetTask(id);
+        dbContext.Remove(task);
+        await dbContext.SaveChangesAsync();
+    }
 }

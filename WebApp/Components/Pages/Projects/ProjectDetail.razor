@@ -35,7 +35,7 @@
             </MudTd>
             <MudTd Class="">@context.Title</MudTd>
             <MudTd Class="d-flex justify-end">
-                <MudIconButton Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Filled.Delete"/>
+                <MudIconButton Size="Size.Small" Color="Color.Error" Icon="@Icons.Material.Filled.Delete" OnClick="() => OnDeleteTask(context)"/>
             </MudTd>
         </RowTemplate>
     </MudTable>

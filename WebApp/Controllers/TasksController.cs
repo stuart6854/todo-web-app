@@ -44,4 +44,11 @@ public class TasksController(ITaskService taskService) : ControllerBase
         var task = await taskService.UpdateTask(projectTaskModel);
         return Ok(new ApiResponse<ProjectTask> { Data = task });
     }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteTask(Guid id)
+    {
+        await taskService.DeleteTask(id);
+        return Ok(new ApiResponse<bool> { Data = true });
+    }
 }

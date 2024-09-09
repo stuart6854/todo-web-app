@@ -28,4 +28,9 @@ public class TaskService(ITaskRepository taskRepository) : ITaskService
     {
         return await taskRepository.UpdateTask(projectTask);
     }
+
+    public async Task DeleteTask(Guid id)
+    {
+        await taskRepository.DeleteTask(id);
+    }
 }
