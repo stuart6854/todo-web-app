@@ -13,4 +13,9 @@ public class AuthService(IAuthRepository authRepository) : IAuthService
     {
         return await authRepository.RegisterUser(username, passwordHash, passwordSalt);
     }
+
+    public async Task SetUserRefreshToken(Guid userId, string refreshToken)
+    {
+         await authRepository.SetUserRefreshToken(userId, refreshToken);
+    }
 }

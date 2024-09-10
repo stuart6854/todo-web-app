@@ -6,4 +6,5 @@ public interface IAuthRepository
 {
     Task<User?> GetUserByUsername(string userName);
     Task<User> RegisterUser(string username, string passwordHash, string passwordSalt);
+    Task SetUserRefreshToken(Guid userId, string refreshToken);
 }

@@ -30,7 +30,7 @@ public partial class Register
         var res = await ApiClient.PostAsync<LoginResponseModel, RegisterModel>("/api/auth/register", RegisterModel);
         if (res.Success)
         {
-            await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsAuthenticated(res.Data.Token);
+            await ((CustomAuthStateProvider)AuthStateProvider).MarkUserAsAuthenticated(res.Data);
             NavManager.NavigateTo("/");
         }
         else

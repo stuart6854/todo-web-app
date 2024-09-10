@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Domain.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Task = System.Threading.Tasks.Task;
@@ -12,9 +13,9 @@ public class CustomAuthStateProvider(ProtectedLocalStorage localStorage) : Authe
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var token = (await localStorage.GetAsync<string>("authToken")).Value;
-        var identity = string.IsNullOrEmpty(token) ? new ClaimsIdentity() : GetClaimsIdentity(token);
-        
+        var sessionState = (await localStorage.GetAsync<LoginResponseModel>("sessionState")).Value;
+        var identity = sessionState == null ? new ClaimsIdentity() : GetClaimsIdentity(sessionState.Token);
+
         var nameIdClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
         if (nameIdClaim != null)
         {
@@ -26,10 +27,10 @@ public class CustomAuthStateProvider(ProtectedLocalStorage localStorage) : Authe
         return new AuthenticationState(user);
     }
 
-    public async Task MarkUserAsAuthenticated(string token)
+    public async Task MarkUserAsAuthenticated(LoginResponseModel model)
     {
-        await localStorage.SetAsync("authToken", token);
-        var identity = GetClaimsIdentity(token);
+        await localStorage.SetAsync("sessionState", model);
+        var identity = GetClaimsIdentity(model.Token);
         var user = new ClaimsPrincipal(identity);
         UserId = Guid.Parse((ReadOnlySpan<char>)user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
@@ -37,7 +38,7 @@ public class CustomAuthStateProvider(ProtectedLocalStorage localStorage) : Authe
 
     public async Task MarkUserAsLoggedOut()
     {
-        await localStorage.DeleteAsync("authToken");
+        await localStorage.DeleteAsync("sessionState");
         var identity = new ClaimsIdentity();
         var user = new ClaimsPrincipal(identity);
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
