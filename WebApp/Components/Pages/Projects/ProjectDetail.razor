@@ -1,5 +1,8 @@
 @page "/projects/{ProjectId}"
 @using Domain
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 
 @if (SelectedProject != null)
 {

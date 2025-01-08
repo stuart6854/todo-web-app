@@ -1,6 +1,8 @@
+using System.Net;
 using System.Text;
 using Application;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -77,6 +79,20 @@ try
     app.UseAntiforgery();
 
     app.ConfigureLogging();
+
+    app.UseStatusCodePages(
+        ctx =>
+        {
+            var response = ctx.HttpContext.Response;
+
+            if (response.StatusCode is (int)HttpStatusCode.Unauthorized or (int)HttpStatusCode.Forbidden)
+            {
+                response.Redirect("/Login");
+            }
+
+            return Task.CompletedTask;
+        }
+    );
 
     app.UseAuthentication();
     app.UseAuthorization();

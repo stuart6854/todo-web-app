@@ -1,4 +1,7 @@
 ﻿@page "/tasks/{TaskId}"
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 
 @if (Task != null)
 {

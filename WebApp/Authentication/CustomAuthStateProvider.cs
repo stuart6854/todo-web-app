@@ -26,7 +26,7 @@ public class CustomAuthStateProvider(ProtectedLocalStorage localStorage) : Authe
         var user = new ClaimsPrincipal(identity);
         return new AuthenticationState(user);
     }
-
+    
     public async Task MarkUserAsAuthenticated(LoginResponseModel model)
     {
         await localStorage.SetAsync("sessionState", model);
